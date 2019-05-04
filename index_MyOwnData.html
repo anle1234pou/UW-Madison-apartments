@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title></title>
+
+		<!--put your external stylesheet links here-->
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="lib/leaflet/leaflet.css">
+		<!--[if IE<9]>
+			<link rel="stylesheet" href="css/style.ie.css">
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<script type="text/javascript" src="lib/jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="lib/leaflet/leaflet-src.js"></script>
+		<script src='https://unpkg.com/simple-statistics@7.0.2/dist/simple-statistics.min.js'>
+		</script>
+		
+		<div id='menu'></div>
+
+		<!--<div id='det_window'>
+			<div id='updatable'></div>
+			<button class='back_to_menu'><img class='arrow' src='data/icon/left_arrow2.png'>&nbsp&nbsp&nbspBack To Menu</button>
+			<p style='line-height:25px;margin-top:3px;font-size:16px;font-family:serif'>
+				Click on yellow polygons(houses) or purple polygons(apartments) to retrive details.
+			</p>
+
+		</div>-->
+		
+		<!--Price Window-->
+		<div id='price_window'>
+			<button class='back_to_menu'><img class='arrow' src='data/icon/left_arrow2.png'>&nbsp&nbsp&nbspBack To Menu</button>
+			<div id='radio_group'>
+				<p><label><input type="radio" name="bedrooms" value="Studio">Studio</label>
+					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<label><input type="radio" name="bedrooms" value="1 Bedroom(s)">1 Bedroom</label>
+					&nbsp&nbsp&nbsp<label><input type="radio" name="bedrooms" value="2 Bedroom(s)">2 Bedrooms</label></p>
+				<p><label><input type="radio" name="bedrooms" value="3 Bedroom(s)">3 Bedrooms</label>
+					&nbsp&nbsp&nbsp<label><input type="radio" name="bedrooms" value="4 Bedroom(s)">4 Bedrooms</label>
+					&nbsp&nbsp<label><input type="radio" name="bedrooms" value="5 Bedroom(s)">5 or more Bedrooms</label></p>
+			</div>
+	
+			<p style='line-height:15px;margin-top:3px;font-size:14px;font-weight:bold'>
+				Click on colored polygons to retrieve details.
+			</p>
+
+			<!--<div id='TT'>
+				Show tooltips of:
+				<label>
+					<input type="radio" id="unitTT" name="showTT" value="number_of_units"> Number of units
+				</label>
+				&nbsp&nbsp<label>
+					<input type="radio" id="priceTT" name="showTT" value="price_per_person"> Price per person
+				</label>
+				<br>________________________
+			</div>-->
+			<div id='TT'>
+				<label>
+					<input type='checkbox' class='showTT' id='unitTT' name='show_TT' value='number_of_units'> Display number of units
+				</label>
+				<!--<label>
+					<input type='checkbox' class='showTT' id='yrTT' name='show_TT' value='number_of_units'> Display year built
+				</label>-->
+			</div>
+
+			<div class='updatable'></div>
+		</div>
+
+		<div id='campus_window'>
+			<button class='back_to_menu'><img class='arrow' src='data/icon/left_arrow2.png'>&nbsp&nbsp&nbspBack To Menu</button>
+			<div id='radio_group_4' style='padding-left:10px; font-family:arial; font-size: 17px'>
+				<p>Select method of traveling: </p>
+				<p><b>
+					<label><input type="radio" name="travel_mode" value='walk'> Walking</label>
+					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+					<label><input type="radio" name="travel_mode" value="bike"> Bicycling</label>
+				</b></p>				
+			</div>
+
+			<div id='radio_group_3' style='padding-left:10px'>
+				<p>___________________________________________</p>
+				<p style='font-size: 17px'>Show walk time to campus landmarks: </p><p><label><input type="radio" name="campus" value='gordon'> To Gordon</label>
+					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+					<label><input type="radio" name="campus" value="bascom"> To Bascom Hall</label></p>
+				<p><label><input type="radio" name="campus" value="unionS"> To Union South</label>
+						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+					<label><input type="radio" name="campus" value="nat"> To Natatorium</label></p>						
+			</div>
+
+		</div>
+		
+		<!--Restaurant Proximity Window-->
+		<div id='res_window'>
+			<button class='back_to_menu'><img class='arrow' src='data/icon/left_arrow2.png'>&nbsp&nbsp&nbspBack To Menu</button>
+			<div id='radio_group_2' style='padding-left:10px'>
+					<p>Select walk accessibility range within: </p><p><label><input type="radio" name="ress" value='5_ress'> 5 minutes</label>
+						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+						<label><input type="radio" name="ress" value="10_ress"> 10 minutes</label></p>
+			</div>
+			
+			<div class='updatable'></div>
+		</div>
+
+		<div id='bus_window'>
+			<button class='back_to_menu'><img class='arrow' src='data/icon/left_arrow2.png'>&nbsp&nbsp&nbspBack To Menu</button>
+			<div id='bus_side_window'></div>
+		</div>
+
+
+		<div id='map'></div>	
+		<div id='compareResult'></div>
+
+		
+
+		<!--put your initial page content here -->
+			
+		<!--you can also use this space for internal scripts or stylesheets;
+		place these within <script> or <style> tags-->
+
+		<!--put your external script links here-->
+
+		
+		<script type="text/javascript" src="js/geojson_MyOwnData.js"></script>
+
+	</body>
+</html>
