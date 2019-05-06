@@ -450,7 +450,7 @@ function campusSymbols(data, data_uw, map) {
 		for (var i = grades.length - 1; i >= 0; i--) {
 			if (i == grades.length - 1) {
 				div.innerHTML += '<i style="background:' + color3[i] + '"></i>'
-					+ '> '  + (grades[i] + 1) + ' min<br>';
+					+ '> '  + (grades[i]) + ' min<br>';
 			} else {
 				div.innerHTML += '<i style="background:' + color3[i] + '"></i>'
 					+ (grades[i] + 1) + (grades[i + 1] ? '&nbsp&ndash;&nbsp' + grades[i + 1] + ' min<br>' : '+');
@@ -460,11 +460,15 @@ function campusSymbols(data, data_uw, map) {
 	};
 
 	legend3.addTo(map);
+
+
+
 	$('.back_to_menu').on({
 		click: function() {
 			if (map.hasLayer(gg2)) {
 				map.removeLayer(gg2)
 			}
+			legend3.remove()
 			if (map.hasLayer(gg_campus_walk)) {
 				gg_campus_walk.clearLayers()
 			}
@@ -573,7 +577,7 @@ function campusSymbols(data, data_uw, map) {
 						map.removeLayer(gg_nat)
 					}
 
-					gg_gordon = L.geoJson(data_uw, {
+					gg_bascom = L.geoJson(data_uw, {
 						onEachFeature(feature, layer) {
 							layer.unbindTooltip()
 							if (feature.properties.name == 'Bascom Hall') {
@@ -597,7 +601,7 @@ function campusSymbols(data, data_uw, map) {
 						map.removeLayer(gg_nat)
 					}
 
-					gg_gordon = L.geoJson(data_uw, {
+					gg_unionS = L.geoJson(data_uw, {
 						onEachFeature(feature, layer) {
 							layer.unbindTooltip()
 							if (feature.properties.name == 'Union South') {
@@ -621,7 +625,7 @@ function campusSymbols(data, data_uw, map) {
 						map.removeLayer(gg_nat)
 					}
 
-					gg_gordon = L.geoJson(data_uw, {
+					gg_nat = L.geoJson(data_uw, {
 						onEachFeature(feature, layer) {
 							layer.unbindTooltip()
 							if (feature.properties.name == 'UW Natatorium') {
@@ -815,7 +819,7 @@ function campusSymbols(data, data_uw, map) {
 						map.removeLayer(gg_nat)
 					}
 
-					gg_gordon = L.geoJson(data_uw, {
+					gg_bascom = L.geoJson(data_uw, {
 						onEachFeature(feature, layer) {
 							layer.unbindTooltip()
 							if (feature.properties.name == 'Bascom Hall') {
@@ -839,9 +843,8 @@ function campusSymbols(data, data_uw, map) {
 						map.removeLayer(gg_nat)
 					}
 
-					gg_gordon = L.geoJson(data_uw, {
+					gg_bascom = L.geoJson(data_uw, {
 						onEachFeature(feature, layer) {
-							console.log("ADDDING BASOM")
 							layer.unbindTooltip()
 							if (feature.properties.name == 'Union South') {
 								var popupContent = 'Destination: ' + feature.properties.name
@@ -864,7 +867,7 @@ function campusSymbols(data, data_uw, map) {
 						map.removeLayer(gg_nat)
 					}
 
-					gg_gordon = L.geoJson(data_uw, {
+					gg_nat = L.geoJson(data_uw, {
 						onEachFeature(feature, layer) {
 							layer.unbindTooltip()
 							if (feature.properties.name == 'UW Natatorium') {
@@ -1130,8 +1133,7 @@ function color5_ress(gg_res, clusterBreaks, styles, data, data5, data_res, map) 
 	legend2.onAdd = function (map) {
 		var div = L.DomUtil.create('div', 'info legend')
 		div.innerHTML = '<div id="legend_title"><b>Number of restaurants within 5-min walk distance</b></div>'
-			var grades = [-1, 4, 11, 24, 39, 56, 77],
-			labels = [];
+			var grades = [-1, 4, 11, 24, 39, 56, 77]
 		for (var i = grades.length - 2; i >= 0; i--) {
 			div.innerHTML += '<i style="background:' + colors[i] + '"></i>'
 				+ (grades[i] + 1) + (grades[i + 1] ? '&nbsp&ndash;&nbsp' + grades[i + 1] + '<br>' : '+');
