@@ -66,7 +66,7 @@ body {
 	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
-	line-height:28px
+	line-height: 0px
 }
 
 #area_window {
@@ -100,7 +100,7 @@ body {
 	line-height:16px
 }
 #res_window {
-	position: absolute;
+	/*position: absolute;*/
 	width: 29%;
 	height: 98%;
 	display: inline-block;
@@ -108,7 +108,7 @@ body {
 	text-align: left;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
-	line-height:16px
+	line-height:5px;
 }
 #bus_window {
 	position: absolute;
@@ -134,7 +134,7 @@ body {
 	width: 90%;
 	margin-top: 50%;
 	margin:4px;
-	line-height: 20px
+	line-height: 18px
 }
 
 #tb_flp {
@@ -154,6 +154,7 @@ body {
 	/*word-wrap: break-word*/
 }
 
+
 #tb_flp tr:nth-child(even){background-color: #f2f2f2;}
 
 #tb_flp tr:hover {background-color: #ddd;}
@@ -165,6 +166,10 @@ body {
   text-align: left;
   background-color: #4CAF50;
   color: white;
+}
+
+#tb_extra {
+	color: grey
 }
 
 
@@ -238,7 +243,6 @@ body {
 }
 #radio_group {
 	width:98%;
-	line-height: 16px;
 }
 
 #area_compare {
@@ -442,11 +446,60 @@ body {
 }
 
 #TT {
-	width: 100%
+	width: 100%;
+	line-height: 5px;
+	margin-top: -10px;
+	margin-bottom: 10px;
 }
 
 #bus_side_window {
 	width: 100%;
 	line-height: 4px !important;
-	font-size: 12px
+	font-size: 12px;
+}
+
+.legend {
+	width: 162px;
+    line-height: 27px;
+	color: #555;
+	background-color: #eeeeee;
+	border: solid #111111 1px;
+	margin-top: 10px;
+	margin-bottom:10px
+}
+.legend2 {
+	width: 132px;
+    line-height: 27px;
+	color: #555;
+	background-color: #eeeeee;
+	border: solid #111111 1px;
+	margin-top: 10px;
+	margin-bottom:10px
+}
+.legend3 {
+	width: 155px;
+    line-height: 27px;
+	color: #555;
+	background-color: #eeeeee;
+	border: solid #111111 1px;
+	margin-top: 10px;
+	margin-bottom:10px
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+	float: left;
+
+	margin-top: 4px;
+	margin-bottom: 4px;
+	margin-left: 8px;
+    margin-right: 8px;
+    opacity: 0.95;
+}
+
+#legend_title {
+	margin-left: 5px;
+	margin-bottom: -2px;
+	font-size: 16px;
+	float: center;
 }

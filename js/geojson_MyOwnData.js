@@ -8,6 +8,8 @@ var circle2
 var markerG = new Array
 var data2Yrs = new Array
 var checkNotif
+
+var gg2
 var gg5
 var gg5_b
 
@@ -40,6 +42,10 @@ var gg_gordon
 var gg_bascom
 var gg_unionS
 var gg_nat
+
+var legend1 = L.control({position: 'bottomleft'});
+var legend2 = L.control({position: 'bottomleft'});
+var legend3 = L.control({position: 'bottomleft'});
 
 //function to instantiate the Leaflet map
 function createMap() {
@@ -135,7 +141,7 @@ function set_campus_window() {
 	$('.back_to_menu').off('click')
 }
 
-function createRepSymbols(data, map) {
+/*function createRepSymbols(data, map) {
 	var gg1 = L.geoJson(data, {
 		style: function(feature) {
 			t = feature.properties.Type_of_housing
@@ -162,7 +168,7 @@ function createRepSymbols(data, map) {
 			$('#det_window').hide()
 		}
 	})
-}
+}*/
 
 function bound_res_10(map,fid1,data10,data_res) {
 	//var gg5 = L.geoJson(data5)
@@ -245,17 +251,17 @@ function all_ress_5(map, data_res, ress5) {
 			layer.on({
 				mouseover: function() {
 					this.openPopup()
-					this.setStyle({color:'blue',fillColor:'red',weight: 3})
+					this.setStyle({color:'blue',fillColor:'orange',weight: 3})
 				},
 				mouseout: function() {
 					this.closePopup()
-					this.setStyle({color: "#000",fillColor:'white',weight: 1})
+					this.setStyle({color: "#000",fillColor:'white',weight: 3})
 				},
 				click: function() {
 					$('#ress_info').remove()
-					var windowContent = "<div id='ress_info'><p>________________________________________</p><p><b>Name:</b> " + feature.properties.name + '</p><p><b>Address:</b> ' + feature.properties.address + '</p><p><b>Price range:</b> '
-					+ feature.properties.price_range + '</p><p><b>Rating count:</b> ' + feature.properties.rating_count + '</p><p><b>Rating score:</b> ' + feature.properties.rating_score 
-					+ '</p><p>Tags: ' + feature.properties.tags + '</p><p><b>URL: </b><a href="url">' + feature.properties.url + '</a></p></div>'
+					var windowContent = "<div id='ress_info' style='padding-top:-10px; line-height:20px'>________________________________________<br><b>Name:</b> " + feature.properties.name + '<br><b>Address:</b> ' + feature.properties.address + '<br><b>Price range:</b> '
+					+ feature.properties.price_range + '<br><b>Rating count:</b> ' + feature.properties.rating_count + '<br><b>Rating score:</b> ' + feature.properties.rating_score 
+					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href="url">' + feature.properties.url + '</a></p></div>'
 					$('#res_window').append(windowContent)
 				}
 			})
@@ -310,6 +316,7 @@ function bound_res_5(map,fid1,data5,data_res) {
 }
 
 function all_ress_10(map, data_res, ress10) {
+	
 	console.log('RESSSSSSSSSSSSSSSSS calledddddddddddd')
 	if (map.hasLayer(gg10)) {
 		map.removeLayer(gg10)
@@ -362,17 +369,17 @@ function all_ress_10(map, data_res, ress10) {
 			layer.on({
 				mouseover: function() {
 					this.openPopup()
-					this.setStyle({color:'blue',fillColor:'red',weight: 3})
+					this.setStyle({color:'blue',fillColor:'orange',weight: 3})
 				},
 				mouseout: function() {
 					this.closePopup()
-					this.setStyle({color: "#000",fillColor:'white',weight: 1})
+					this.setStyle({color: "#000",fillColor:'white',weight: 3})
 				},
 				click: function() {
 					$('#ress_info').remove()
-					var windowContent = "<div id='ress_info'><p>________________________________________</p><p><b>Name:</b> " + feature.properties.name + '</p><p><b>Address:</b> ' + feature.properties.address + '</p><p><b>Price range:</b> '
-					+ feature.properties.price_range + '</p><p><b>Rating count:</b> ' + feature.properties.rating_count + '</p><p><b>Rating score:</b> ' + feature.properties.rating_score 
-					+ '</p><p>Tags: ' + feature.properties.tags + '</p><p><b>URL: </b><a href="url">' + feature.properties.url + '</a></p></div>'
+					var windowContent = "<div id='ress_info' style='padding-top:-10px; line-height:20px'>________________________________________<br><b>Name:</b> " + feature.properties.name + '<br><b>Address:</b> ' + feature.properties.address + '<br><b>Price range:</b> '
+					+ feature.properties.price_range + '<br><b>Rating count:</b> ' + feature.properties.rating_count + '<br><b>Rating score:</b> ' + feature.properties.rating_score 
+					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href="url">' + feature.properties.url + '</a></div>'
 					$('#res_window').append(windowContent)
 				}
 			})
@@ -468,6 +475,9 @@ function campusSymbols(data, data_uw, map) {
 		}
 		if (map.hasLayer(gg_campus_bike)) {
 			gg_campus_bike.clearLayers()
+		}
+		if (map.hasLayer(gg2)) {
+			gg2.clearLayers()
 		}
 		$("input[name='campus']").click(function() {
 			var rv2 = $("input[name='campus']:checked").val();
@@ -689,6 +699,11 @@ function campusSymbols(data, data_uw, map) {
 								return styles3[5]
 							}
 						}
+					},
+					onEachFeature(feature, layer) {
+						layer.on({
+							click: updateInfoWindow(feature)
+						})
 					}
 				}).addTo(map)
 			}
@@ -917,6 +932,9 @@ function campusSymbols(data, data_uw, map) {
 }
 
 function resSymbols(data, data5, data10, data_res, map) {
+	if (map.hasLayer(gg2)) {
+		gg2.clearLayers()
+	}
 	var domain_all = []
 
 	console.log('DATA2222222222222', data, data5, data10)
@@ -996,6 +1014,8 @@ function resSymbols(data, data5, data10, data_res, map) {
 	$('.back_to_menu').on({
 		click: function() {
 			//console.log("BACK?",map.hasLayer(gg2))
+			legend2.remove()
+			
 			if (map.hasLayer(gg10_b)) {
 				map.removeLayer(gg10_b)
 			}
@@ -1021,6 +1041,26 @@ function resSymbols(data, data5, data10, data_res, map) {
 	})
 }
 function color5_ress(gg_res, clusterBreaks, styles, data, data5, data_res, map) {
+	
+	var colors = ["#ffffb2","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c"]
+	legend2.remove()
+
+	legend2.onAdd = function (map) {
+		var div = L.DomUtil.create('div', 'info legend')
+		div.innerHTML = '<div id="legend_title"><b>Number of restaurants within 5-min walk distance</b></div>'
+			var grades = [-1, 4, 11, 24, 39, 56, 77],
+			labels = [];
+		for (var i = grades.length - 2; i >= 0; i--) {
+			div.innerHTML += '<i style="background:' + colors[i] + '"></i>'
+				+ (grades[i] + 1) + (grades[i + 1] ? '&nbsp&ndash;&nbsp' + grades[i + 1] + '<br>' : '+');
+	
+		}
+
+		return div;
+	};
+
+	legend2.addTo(map);
+
 	clusterBreaks.push(999)
 	gg0 = L.geoJson(data, {
 		/*style: function() {
@@ -1064,6 +1104,30 @@ function color5_ress(gg_res, clusterBreaks, styles, data, data5, data_res, map) 
 }
 
 function color10_ress(gg_res, clusterBreaks, styles, data, data10, data_res, map) {
+
+	var colors = ["#ffffb2","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#b10026"]
+	legend2.remove()
+
+	legend2.onAdd = function (map) {
+		var div = L.DomUtil.create('div', 'info legend')
+		div.innerHTML = '<div id="legend_title"><b>Number of restaurants within 10-min walk distance</b></div>'
+			grades = [-1, 4, 11, 24, 39, 56, 77, 'more than 77'],
+			labels = [];
+		for (var i = grades.length - 2; i >= 0; i--) {
+			if (i == grades.length - 2) {
+				div.innerHTML += '<i style="background:' + colors[i] + '"></i>'
+					+ grades[i +1] + '<br>'
+			} else {
+				div.innerHTML += '<i style="background:' + colors[i] + '"></i>'
+					+ (grades[i] + 1) + (grades[i + 1] ? '&nbsp&ndash;&nbsp' + grades[i + 1] + '<br>' : '+');
+			}
+			
+		}
+
+		return div;
+	};
+
+	legend2.addTo(map);
 	clusterBreaks.push(999)
 	gg0 = L.geoJson(data, {
 		/*style: function() {
@@ -1199,6 +1263,7 @@ function priceSymbols(data, map) {
 	{"color": "#000000", "fillColor": "#f03b20","fillOpacity": '0.95',"weight": 1},
 	{"color": "#000000", "fillColor": "#bd0026","fillOpacity": '0.95',"weight": 1},
 	]
+	var colors = ["#ffffb2", "#fed976","#feb24c","#fd8d3c","#f03b20","#bd0026"]
 	/*
 	var styles = [{"color": "#000000", "fillColor": "#ffffcc","fillOpacity": '0.95',"weight": 1},
 	{"color": "#000000", "fillColor": "#c7e9b4","fillOpacity": '0.95',"weight": 1},
@@ -1208,10 +1273,36 @@ function priceSymbols(data, map) {
 	{"color": "#000000", "fillColor": "#253494","fillOpacity": '0.95',"weight": 1},
 	]*/
 
-	var gg2 = L.geoJson(data)
+	/*var gg2 = L.geoJson(data, {
+		onEachFeature(feature, layer) {
+			createInfoPopup(feature, layer, stylePass, radioValue)
+		}
+	})*/
+
+	legend1.onAdd = function (map) {
+			
+		var div = L.DomUtil.create('div', 'info legend')
+		div.innerHTML = '<div id="legend_title"><b>Price per person</b></div>'
+			grades = [0, 535, 690, 862.5, 1065, 1310, 1830],
+			labels = [];
+
+		for (var i = grades.length - 2; i >= 0; i--) {
+			div.innerHTML += '<i style="background:' + colors[i] + '"></i> $'
+				+ grades[i] + (grades[i + 1] ? '&nbsp&ndash;&nbsp$' + grades[i + 1] + '<br>' : '+')
+		}
+		div.innerHTML += '<i style="background:' + '#cccccc' + '"></i>no such floorplan<br>';
+
+
+		return div;
+	};
+
+	legend1.addTo(map);
+
+	gg2 = L.geoJson(data)
 
 	var noDataStyle = {"color": "#999999", "fillColor": "#cccccc","fillOpacity": 1,"weight": 1}
 	$("input[type='radio']").click(function(){
+		
 		if (map.hasLayer(gg2)) {
 			gg2.clearLayers()
 		}
@@ -1224,7 +1315,18 @@ function priceSymbols(data, map) {
 				for (i = 0; i < keyL.length; i ++) {
 					var flpKey = keyL[i]
 					if (feature['properties']['Floorplans'][flpKey]['Title'] == radioValue && feature['properties']['Floorplans'][flpKey]['Individual_Average']) {
-						avgPrice = parseFloat(feature['properties']['Floorplans'][flpKey]['Individual_Average']['avg_price'])
+						var avgPrice = parseFloat(feature['properties']['Floorplans'][flpKey]['Individual_Average']['avg_price'])
+						if (isNaN(avgPrice) === false) {
+							for (i = 0; i < clusterBreaks.length - 1; i ++) {
+								if (parseFloat(avgPrice) > clusterBreaks[i] && (parseFloat(avgPrice) < clusterBreaks[i + 1])) {
+									style1 = styles[i]
+									return style1
+								}
+							}
+						}
+					}
+					else if ((feature['properties']['Floorplans'][flpKey]['Title'] == '6 Bedroom(s)' || feature['properties']['Floorplans'][flpKey]['Title'] == '7 Bedroom(s)' || feature['properties']['Floorplans'][flpKey]['Title'] == '8 Bedroom(s)' || feature['properties']['Floorplans'][flpKey]['Title'] == '9 Bedroom(s)' || feature['properties']['Floorplans'][flpKey]['Title'] == '10 Bedroom(s)' || feature['properties']['Floorplans'][flpKey]['Title'] == '11 Bedroom(s)' || feature['properties']['Floorplans'][flpKey]['Title'] == '12 Bedroom(s)' || feature['properties']['Floorplans'][flpKey]['Title'] == '13 Bedroom(s)') && feature['properties']['Floorplans'][flpKey]['Individual_Average']) {
+						var avgPrice = parseFloat(feature['properties']['Floorplans'][flpKey]['Individual_Average']['avg_price'])
 						if (isNaN(avgPrice) === false) {
 							for (i = 0; i < clusterBreaks.length - 1; i ++) {
 								if (parseFloat(avgPrice) > clusterBreaks[i] && (parseFloat(avgPrice) < clusterBreaks[i + 1])) {
@@ -1238,23 +1340,16 @@ function priceSymbols(data, map) {
 				return noDataStyle
 			},
 			onEachFeature(feature, layer) {
-				stylePass = style1
+				var stylePass = style1
 
 				if (Object.keys(stylePass).length === 0) {
-					stylePass = {"color": "#999999", "fillColor": "#cccccc","fillOpacity": 1,"weight": 1}
+					var stylePass = {"color": "#999999", "fillColor": "#cccccc","fillOpacity": 1,"weight": 1}
 				}
 				console.log('passssssss', style1, Object.values(stylePass)[0])
 				createInfoPopup(feature, layer, stylePass, radioValue)
-
 			}
 		}).addTo(map)
 	});
-
-
-	/*var zoomLv = map.getZoom()
-	console.log("ZOOM", zoomLv)
-	if (zoomLv >= 17) {
-		gg2.*/
 
 	$('.back_to_menu').on({
 		click: function() {
@@ -1264,6 +1359,7 @@ function priceSymbols(data, map) {
 				//gg2.clearLayers()
 				map.removeLayer(gg2)
 			}
+			legend1.remove()
 			$('#menu').show()
 			$('#price_window').hide()
 		}
@@ -1271,6 +1367,7 @@ function priceSymbols(data, map) {
 }
 
 function createInfoPopup(feature,layer,style,radioValue) {
+
 	console.log('passed style', style)
 	prt = feature.properties
 	var addr = prt.Address
@@ -1361,7 +1458,7 @@ function updateInfoWindow(feature) {
 	var prt = feature.properties
 	var addr = prt.Address
 	var name = prt.Name
-	var typeH = prt.Type_of_housing
+	//var typeH = prt.Type_of_housing
 	var url1 = prt.URL1
 	var url2 = prt.URL2
 	var flp = prt.Floorplans
@@ -1372,8 +1469,8 @@ function updateInfoWindow(feature) {
 
 	var panelCntnt = '<div class="updatable"><p id="updatable-basic"><b>Name: </b>' + name + '</p>'
 	+'<p id="updatable-basic"><b>Address: </b>' + addr + '</p>'
-	+'<p id="updatable-basic"><b>Type of housing: </b>' + typeH + '</p>'
-	+'<p id="updatable-basic"><b>Specific type: </b>' + det + '</p>'
+	//+'<p id="updatable-basic"><b>Type of housing: </b>' + typeH + '</p>'
+	+'<p id="updatable-basic"><b>Type: </b>' + det + '</p>'
 	+'<p id="updatable-basic"><b>Year built: </b>' + yrB + '</p>'
 	+'<p id="updatable-basic"><b>URL1: </b><br><a href="url">' + url1 + '</a></p>'
 	
@@ -1446,7 +1543,7 @@ function updateInfoWindow(feature) {
 				var extraPPA = extra['Price/Unit_area']
 					var extraPPAStr = extraPPA[0]
 						
-				tableC += '<tr id="tb_extra>'/* + '<td>Extra Layout' + ex*/ + '<td>' + extraTitle + '</td><td>' 
+				tableC += '<tr id="tb_extra">'/* + '<td>Extra Layout' + ex*/ + '<td>&nbsp&nbsp&nbsp&nbspw/ extra feature: ' + extraTitle + '</td><td>' 
 				+ extraPriceStr + '</td><td>' + extraAreaStr + '</td><td>' + extraPPAStr + '</td></tr>'
 			}				
 		}
@@ -1697,14 +1794,14 @@ function enableMenuButtons(response, map) {
 	/*$('#menu').append("<p id='title_explore'>Explore<br>_________________________</p>")
 	$('#menu').append("<br><button id='detail_explore'>Explore Details</button>")*/
 	
-	$('#detail_explore').off('click')
+	/*$('#detail_explore').off('click')
 	$('#detail_explore').on({
 		'click': function() {
 			console.log("DET_EXPLORE clicked!")
 			set_det_window()
 			createRepSymbols(response, map)
 		}
-	})
+	})*/
 
 	$('#menu').append("<p id='title_compare'>Compare<br>_________________________</p>")	
 	
@@ -1762,6 +1859,9 @@ function enableMenuButtons(response, map) {
 }
 
 function busSymbols(data, dataR, dataS, map) {
+	if (map.hasLayer(gg2)) {
+		gg2.clearLayers()
+	}
 	console.log('CORRECT!')
 	$('#bus_side_window').empty()
 	gg_routes = L.geoJson(dataR, {

@@ -43,8 +43,8 @@
 					&nbsp&nbsp<label><input type="radio" name="bedrooms" value="5 Bedroom(s)">5 or more Bedrooms</label></p>
 			</div>
 	
-			<p style='line-height:15px;margin-top:3px;font-size:14px;font-weight:bold'>
-				Click on colored polygons to retrieve details.
+			<p style='line-height:18px;margin-top:3px;font-size:14px;font-weight:bold'>
+				Select the floor plan you are interested in, the map will update with all apartments having that price, then you can click on apartment polygons to retrieve details.
 			</p>
 
 			<!--<div id='TT'>
@@ -61,6 +61,7 @@
 				<label>
 					<input type='checkbox' class='showTT' id='unitTT' name='show_TT' value='number_of_units'> Display number of units
 				</label>
+				<div>___________________________________________</div>
 				<!--<label>
 					<input type='checkbox' class='showTT' id='yrTT' name='show_TT' value='number_of_units'> Display year built
 				</label>-->
@@ -95,10 +96,18 @@
 		<!--Restaurant Proximity Window-->
 		<div id='res_window'>
 			<button class='back_to_menu'><img class='arrow' src='data/icon/left_arrow2.png'>&nbsp&nbsp&nbspBack To Menu</button>
-			<div id='radio_group_2' style='padding-left:10px'>
-					<p>Select walk accessibility range within: </p><p><label><input type="radio" name="ress" value='5_ress'> 5 minutes</label>
+			<div id='radio_group_2' style='padding-top: 10px;padding-top:-150px;padding-bottom:-15px;line-height:20px;font-size:14px'>
+					<div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspThe "discover restaurants" functionality enables you to discover restaurans within 5/10 minute walking distances, you can use this tool to 
+						find apartments with good restaurant accessibility — if you love to dine out close to home.</div>
+					<div>_______________________________________</div>
+					<div style='line-height: 25px'>
+						
+						<b>Select walk distance to discover the number of restaurants for all apartments</b><br>
+						<label><input type="radio" name="ress" value='5_ress'> 5 minutes</label>
 						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-						<label><input type="radio" name="ress" value="10_ress"> 10 minutes</label></p>
+						<label><input type="radio" name="ress" value="10_ress"> 10 minutes</label>
+						
+					</div>
 			</div>
 			
 			<div class='updatable'></div>
