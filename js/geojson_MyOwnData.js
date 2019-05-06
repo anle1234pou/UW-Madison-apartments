@@ -434,6 +434,9 @@ function campusSymbols(data, data_uw, map) {
 	//L.geoJson(data_uw).addTo(map)
 	$('.back_to_menu').on({
 		click: function() {
+			if (map.hasLayer(gg2)) {
+				map.removeLayer(gg2)
+			}
 			if (map.hasLayer(gg_campus_walk)) {
 				gg_campus_walk.clearLayers()
 			}
@@ -1015,7 +1018,9 @@ function resSymbols(data, data5, data10, data_res, map) {
 		click: function() {
 			//console.log("BACK?",map.hasLayer(gg2))
 			legend2.remove()
-			
+			if (map.hasLayer(gg2)) {
+				map.removeLayer(gg2)
+			}
 			if (map.hasLayer(gg10_b)) {
 				map.removeLayer(gg10_b)
 			}
@@ -1355,8 +1360,6 @@ function priceSymbols(data, map) {
 		click: function() {
 			//console.log("BACK?",map.hasLayer(gg2))
 			if (map.hasLayer(gg2)) {
-				console.log('CLEARING')
-				//gg2.clearLayers()
 				map.removeLayer(gg2)
 			}
 			legend1.remove()
@@ -1925,6 +1928,9 @@ function busSymbols(data, dataR, dataS, map) {
 	}).addTo(map)
 	$('.back_to_menu').on({
 		click: function() {
+			if (map.hasLayer(gg2)) {
+				map.removeLayer(gg2)
+			}
 			if (map.hasLayer(gg_stops)) {
 				gg_stops.clearLayers()
 			}
