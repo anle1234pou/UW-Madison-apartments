@@ -432,6 +432,34 @@ function set_bus_window() {
 
 function campusSymbols(data, data_uw, map) {
 	//L.geoJson(data_uw).addTo(map)
+	
+	var styles3 = [{"color": "#000000", "fillColor": "#ffffcc","fillOpacity": '0.95',"weight": 0.5},
+	{"color": "#000000", "fillColor": "#c7e9b4","fillOpacity": '0.95',"weight": 0.5},
+	{"color": "#000000", "fillColor": "#7fcdbb","fillOpacity": '0.95',"weight": 0.5},
+	{"color": "#000000", "fillColor": "#41b6c4","fillOpacity": '0.95',"weight": 0.5},
+	{"color": "#000000", "fillColor": "#2c7fb8","fillOpacity": '0.95',"weight": 0.5},
+	{"color": "#000000", "fillColor": "#253494","fillOpacity": '0.95',"weight": 0.5},
+	]
+	var color3 = ["#ffffcc","#c7e9b4","#7fcdbb","#41b6c4","#2c7fb8","#253494"]
+	legend3.remove()
+
+	legend3.onAdd = function (map) {
+		var div = L.DomUtil.create('div', 'info legend')
+		div.innerHTML = '<div id="legend_title"><b>Time to campus landmark</b></div>'
+			var grades = [0, 5, 10, 15, 20, 25]
+		for (var i = grades.length - 1; i >= 0; i--) {
+			if (i == grades.length - 1) {
+				div.innerHTML += '<i style="background:' + color3[i] + '"></i>'
+					+ '> '  + (grades[i] + 1) + ' min<br>';
+			} else {
+				div.innerHTML += '<i style="background:' + color3[i] + '"></i>'
+					+ (grades[i] + 1) + (grades[i + 1] ? '&nbsp&ndash;&nbsp' + grades[i + 1] + ' min<br>' : '+');
+			}
+		}
+		return div;
+	};
+
+	legend3.addTo(map);
 	$('.back_to_menu').on({
 		click: function() {
 			if (map.hasLayer(gg2)) {
@@ -461,13 +489,7 @@ function campusSymbols(data, data_uw, map) {
 		}
 	})
 	console.log("UW_landmarks", data_uw)
-	var styles3 = [{"color": "#000000", "fillColor": "#ffffcc","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#c7e9b4","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#7fcdbb","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#41b6c4","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#2c7fb8","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#253494","fillOpacity": '0.95',"weight": 0.5},
-	]
+	
 	$("input[name='travel_mode']").click(function() {
 		var rv1 = $("input[name='travel_mode']:checked").val()
 		console.log('RV1:', rv1, typeof rv1)
@@ -483,9 +505,7 @@ function campusSymbols(data, data_uw, map) {
 			gg2.clearLayers()
 		}
 		$("input[name='campus']").click(function() {
-			var rv2 = $("input[name='campus']:checked").val();
-			console.log('RV2:', rv2)
-			
+			var rv2 = $("input[name='campus']:checked").val();			
 			// Walk time
 			if (rv1 == 'walk') {
 				
@@ -579,7 +599,6 @@ function campusSymbols(data, data_uw, map) {
 
 					gg_gordon = L.geoJson(data_uw, {
 						onEachFeature(feature, layer) {
-							console.log("ADDDING BASOM")
 							layer.unbindTooltip()
 							if (feature.properties.name == 'Union South') {
 								var popupContent = 'Destination: ' + feature.properties.name
@@ -604,7 +623,6 @@ function campusSymbols(data, data_uw, map) {
 
 					gg_gordon = L.geoJson(data_uw, {
 						onEachFeature(feature, layer) {
-							console.log("ADDDING BASOM")
 							layer.unbindTooltip()
 							if (feature.properties.name == 'UW Natatorium') {
 								var popupContent = 'Destination: ' + feature.properties.name
@@ -704,8 +722,36 @@ function campusSymbols(data, data_uw, map) {
 						}
 					},
 					onEachFeature(feature, layer) {
+						var ppct = ''
+
+						if (rv2 == 'nat') {
+							ppct = '<div><b>Walking</b><br>Travel time: ' + feature.properties.to_campus.to_nat_walk[1] + '<br>Travel distance: ' + feature.properties.to_campus.to_nat_walk[0] + '</div>'
+						}
+						if (rv2 == 'gordon') {
+							ppct = '<div><b>Walking</b><br>Travel time: ' + feature.properties.to_campus.to_gordon_walk[1] + '<br>Travel distance: ' + feature.properties.to_campus.to_gordon_walk[0] + '</div>'
+						}
+						if (rv2 == 'bascom') {
+							ppct = '<div><b>Walking</b><br>Travel time: ' + feature.properties.to_campus.to_bascom_walk[1] + '<br>Travel distance: ' + feature.properties.to_campus.to_bascom_walk[0] + '</div>'
+						}
+						if (rv2 == 'unionS') {
+							ppct = '<div><b>Walking</b><br>Travel time: ' + feature.properties.to_campus.to_unionS_walk[1] + '<br>Travel distance: ' + feature.properties.to_campus.to_unionS_walk[0] + '</div>'
+						}
+
+						layer.bindPopup(ppct,{
+							offset:new L.Point(0,-8)
+						})
 						layer.on({
-							click: updateInfoWindow(feature)
+							mouseover: function() {
+								layer.setStyle({color:"#5555cc",weight:3})
+								layer.openPopup()
+							},
+							mouseout: function() {
+								layer.setStyle({"color": "#000000", "weight": 1})
+								layer.closePopup()
+							},
+							click: function() {
+								updateInfoWindow(feature)
+							}
 						})
 					}
 				}).addTo(map)
@@ -747,7 +793,6 @@ function campusSymbols(data, data_uw, map) {
 
 					gg_gordon = L.geoJson(data_uw, {
 						onEachFeature(feature, layer) {
-							console.log("ADDDING BASOM")
 							layer.unbindTooltip()
 							if (feature.properties.name == 'Gordon Dining and Event Center') {
 								var popupContent = 'Destination: ' + feature.properties.name
@@ -821,7 +866,6 @@ function campusSymbols(data, data_uw, map) {
 
 					gg_gordon = L.geoJson(data_uw, {
 						onEachFeature(feature, layer) {
-							console.log("ADDDING BASOM")
 							layer.unbindTooltip()
 							if (feature.properties.name == 'UW Natatorium') {
 								var popupContent = 'Destination: ' + feature.properties.name
@@ -927,6 +971,39 @@ function campusSymbols(data, data_uw, map) {
 								return styles3[5]
 							}
 						}
+					},
+					onEachFeature(feature, layer) {
+						var ppct = ''
+
+						if (rv2 == 'nat') {
+							ppct = '<div><b>Bicycling</b><br>Travel time: ' + feature.properties.to_campus.to_nat_bicycling[1] + '<br>Travel distance: ' + feature.properties.to_campus.to_nat_bicycling[0] + '</div>'
+						}
+						if (rv2 == 'gordon') {
+							ppct = '<div><b>Bicycling</b><br>Travel time: ' + feature.properties.to_campus.to_gordon_bicycling[1] + '<br>Travel distance: ' + feature.properties.to_campus.to_gordon_bicycling[0] + '</div>'
+						}
+						if (rv2 == 'bascom') {
+							ppct = '<div><b>Bicycling</b><br>Travel time: ' + feature.properties.to_campus.to_bascom_bicycling[1] + '<br>Travel distance: ' + feature.properties.to_campus.to_bascom_bicycling[0] + '</div>'
+						}
+						if (rv2 == 'unionS') {
+							ppct = '<div><b>Bicycling</b><br>Travel time: ' + feature.properties.to_campus.to_unionS_bicycling[1] + '<br>Travel distance: ' + feature.properties.to_campus.to_unionS_bicycling[0] + '</div>'
+						}
+
+						layer.bindPopup(ppct,{
+							offset:new L.Point(0,-8)
+						})
+						layer.on({
+							mouseover: function() {
+								layer.setStyle({color:"#5555cc",weight:3})
+								layer.openPopup()
+							},
+							mouseout: function() {
+								layer.setStyle({"color": "#000000", "weight": 1})
+								layer.closePopup()
+							},
+							click: function() {
+								updateInfoWindow(feature)
+							}
+						})
 					}
 				}).addTo(map)
 			}
@@ -1561,6 +1638,7 @@ function updateInfoWindow(feature) {
 	$('#price_window').append(panelCntnt)
 	$('#price_window').append(tableC)
 	$('#res_window').append(panelCntnt)
+	$('#campus_window').append(panelCntnt)
 }
 
 /*function updateColor(feature, layer) {
