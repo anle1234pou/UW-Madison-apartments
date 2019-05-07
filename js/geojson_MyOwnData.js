@@ -57,10 +57,6 @@ function createMap() {
 	
 	L.control.scale({'position':'bottomright'}).addTo(map);
 
-    //add OSM base tilelayer
-    /*L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-	}).addTo(map);*/
 	L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 		subdomains: 'abcd',
@@ -95,23 +91,7 @@ function calcR(attrValue) {
 	return Math.sqrt((attrValue * 0.5)/Math.PI) * 0.8
 }
 
-function processData(data) {
-	var attributes = new Array
-	
-	// get properties in geojson
-	var properties = data.features[0].properties
-
-	// from the properties dict get all items with keys having word 'gdp' and add it to 'attributes' list
-	for (var attribute in properties) {
-		if (attribute.includes('gdp')) {
-			attributes.push(attribute)
-		}
-	}
-	//return a list of key names as titles of gdp value
-	return attributes
-}
-
-function pointToLayer(/*feature,*/latlng/*,attributes*/) {
+function pointToLayer(latlng) {
 
 	var options = {
 		fillColor: "#ff7800",
@@ -124,8 +104,6 @@ function pointToLayer(/*feature,*/latlng/*,attributes*/) {
 
 	// "Circle-Marker" layer is added as a leaflet layer
 	var cmLayer = L.circleMarker(latlng,options)
-
-	//createPopupCntnt(cmLayer, radius, proprts, attr)
 
 	return cmLayer
 }
@@ -140,35 +118,6 @@ function set_campus_window() {
 	$('#campus_window').show()
 	$('.back_to_menu').off('click')
 }
-
-/*function createRepSymbols(data, map) {
-	var gg1 = L.geoJson(data, {
-		style: function(feature) {
-			t = feature.properties.Type_of_housing
-			var style1 = {"color": "#ddcc00", "fillColor": "#cccc00","opacity": 0.8,"weight": 1}
-			var style2 = {"color": "#ff55ff", "fillColor": "#ff55ff","opacity": 0.8,"weight": 1}
-			if (t == "House") {
-				return style1
-			} else {
-				return style2
-			}
-		},
-		onEachFeature(feature, layer) {
-			createInfoPopup(map,feature, layer)
-		}
-
-	}).addTo(map)
-	$('.back_to_menu').on({
-		click: function() {
-			//L.geoJson(data).removeFrom(map)
-			console.log('BACKING1')
-
-			gg1.clearLayers()
-			$('#menu').show()
-			$('#det_window').hide()
-		}
-	})
-}*/
 
 function bound_res_10(map,fid1,data10,data_res) {
 	//var gg5 = L.geoJson(data5)
@@ -189,11 +138,6 @@ function bound_res_10(map,fid1,data10,data_res) {
 				all_ress_10(map, data_res, ress10)
 			}
 			return (parseInt(feature.id) === fid1)
-		},
-		onEachFeature: function(feature, layer) {
-			/*map.close
-			var toolTipContent = '<div><p>Number of restaurants reachable in 5 min: ' + feature.properties.reachable_restaurants + '<div>'
-			layer.bindTooltip(toolTipContent).openTooltip()	*/
 		}
 	}).addTo(map)
 
@@ -273,20 +217,11 @@ function all_ress_5(map, data_res, ress5) {
 	$('#ress_notif').remove()
 	var panelContent = "<div id='ress_notif'><p>Number of restaurants within 5-min walk distance: <b>" + ress5.length + '<b></p>'
 	$('#res_window').append(panelContent)
-	/*gg5.bindPopup(feature.properties.FID, {
-		offset: new L.Point(0, -5)
-	})*/
-	/*$(layer).on({
-		mouseover: function() {
-			this.openPopup()
-		}
-	})*/
 
 	resInfoPopup(selected_ress)
 	gg5.bringToFront()
 }
 function bound_res_5(map,fid1,data5,data_res) {
-	//var gg5 = L.geoJson(data5)
 
 	console.log(map.hasLayer(gg5_b))
 	if (map.hasLayer(gg5_b)) {
@@ -304,11 +239,6 @@ function bound_res_5(map,fid1,data5,data_res) {
 				all_ress_5(map, data_res, ress5)
 			}
 			return (parseInt(feature.id) === fid1)
-		},
-		onEachFeature: function(feature, layer) {
-			/*map.close
-			var toolTipContent = '<div><p>Number of restaurants reachable in 5 min: ' + feature.properties.reachable_restaurants + '<div>'
-			layer.bindTooltip(toolTipContent).openTooltip()	*/
 		}
 	}).addTo(map)
 
@@ -387,18 +317,9 @@ function all_ress_10(map, data_res, ress10) {
 
 	}).addTo(map)
 	
-	//set_res_window.append()
 	$('#ress_notif').remove()
 	var panelContent = "<div id='ress_notif'><p>Number of restaurants within 10-min walk distance: <b>" + ress10.length + '<b></p>'
 	$('#res_window').append(panelContent)
-	/*gg5.bindPopup(feature.properties.FID, {
-		offset: new L.Point(0, -5)
-	})*/
-	/*$(layer).on({
-		mouseover: function() {
-			this.openPopup()
-		}
-	})*/
 
 	resInfoPopup(selected_ress)
 	gg10.bringToFront()
@@ -525,11 +446,6 @@ function campusSymbols(data, data_uw, map) {
 				if (map.hasLayer(gg_nat)) {
 					map.removeLayer(gg_nat)
 				}
-				/*gg_gordon = L.geoJson(data_uw, {
-					onEachFeature(feature, layer) {
-						layer.unbindTooltip()
-					}
-				}).addTo(map)*/
 
 				if (map.hasLayer(gg_campus_walk)) {
 					gg_campus_walk.clearLayers()
@@ -775,12 +691,6 @@ function campusSymbols(data, data_uw, map) {
 					map.removeLayer(gg_nat)
 				}
 
-				/*gg_gordon = L.geoJson(data_uw, {
-					onEachFeature(feature, layer) {
-						layer.unbindTooltip()
-					}
-				}).addTo(map)*/
-
 				if (rv2 == 'gordon') {
 					if (map.hasLayer(gg_gordon)) {
 						map.removeLayer(gg_gordon)
@@ -888,8 +798,6 @@ function campusSymbols(data, data_uw, map) {
 						console.log('INTO')
 						if (rv2 == 'gordon') {
 							var gordon_bike = parseInt(feature.properties.to_campus.to_gordon_bicycling[1].slice(0, feature.properties.to_campus.to_gordon_bicycling[1].indexOf(' ')))
-							//var gor2 = feature.properties.to_campus.to_gordon_bicycling[1](1)
-							//var gor3 = feature.properties.to_campus.to_gordon_bicycling[1](2)
 							if (gordon_bike > 0 && gordon_bike <= 5) {
 								console.log('BIKE TIME: GORDON', gordon_bike)
 								return styles3[0]
@@ -1020,13 +928,6 @@ function resSymbols(data, data5, data10, data_res, map) {
 	}
 	var domain_all = []
 
-	console.log('DATA2222222222222', data, data5, data10)
-	//var gg0 = L.geoJson(data)
-	
-	//var gg5_b = L.geoJson(data5)
-
-	//var gg10_b = L.geoJson(data10)
-
 	L.geoJson(data5, {
 		onEachFeature(feature, layer) {
 			res_count_5 = feature.properties.reachable_restaurants.length
@@ -1137,9 +1038,7 @@ function color5_ress(gg_res, clusterBreaks, styles, data, data5, data_res, map) 
 		for (var i = grades.length - 2; i >= 0; i--) {
 			div.innerHTML += '<i style="background:' + colors[i] + '"></i>'
 				+ (grades[i] + 1) + (grades[i + 1] ? '&nbsp&ndash;&nbsp' + grades[i + 1] + '<br>' : '+');
-	
 		}
-
 		return div;
 	};
 
@@ -1147,13 +1046,8 @@ function color5_ress(gg_res, clusterBreaks, styles, data, data5, data_res, map) 
 
 	clusterBreaks.push(999)
 	gg0 = L.geoJson(data, {
-		/*style: function() {
-			return ({"color": "#999999", "fillColor": "#cccccc","fillOpacity": 1,"weight": 1})
-		},*/
 		style: function(feature) {
 			console.log(data5, feature.properties.FID)
-			/*for (i = 0; i < 796; i ++) {
-				if (data5.features[i].id == feature.properties.FID) {*/
 			for (i = 0; i < 6; i ++) {
 				var resCt = data5.features[feature.properties.FID].properties.reachable_restaurants.length
 				if (resCt >= clusterBreaks[i] && resCt <= clusterBreaks[i + 1]) {
@@ -1205,9 +1099,7 @@ function color10_ress(gg_res, clusterBreaks, styles, data, data10, data_res, map
 				div.innerHTML += '<i style="background:' + colors[i] + '"></i>'
 					+ (grades[i] + 1) + (grades[i + 1] ? '&nbsp&ndash;&nbsp' + grades[i + 1] + '<br>' : '+');
 			}
-			
 		}
-
 		return div;
 	};
 
@@ -1249,21 +1141,6 @@ function color10_ress(gg_res, clusterBreaks, styles, data, data10, data_res, map
 		}
 	}).addTo(map)
 
-	// create basic a basic point layer containing all restaurants
-
-	/*var gg_res = L.geoJson(data_res, {
-		pointToLayer: function(feature,latlng) {
-			var options = {
-				radius: 6,
-				fillColor: "#33ff33",
-				color: "#000",
-				weight: 1,
-				opacity: 1,
-				fillOpacity: 0.8
-			};
-			return L.circleMarker(latlng, options)
-		}
-	}).addTo(map)*/
 	gg_res.bringToFront()
 }
 
@@ -1300,45 +1177,11 @@ function priceSymbols(data, map) {
 	clusterBreaks = [0]
 	console.log(clusters)
 
-	// Get the largest value for each cluster as cluster breaks
 	for (i = 0; i < clusters.length; i ++) {
 		clusterBreaks.push(clusters[i][clusters[i].length - 1])
 	}
 	clusterBreaks.push(9999)
 	console.log('Class breaks', clusterBreaks)
-
-	// 4-CLASS YELLOW-BLUE
-	/*var styles = [{"color": "#000000", "fillColor": "#ffffcc","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#a1dab4","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#41b6c4","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#225ea8","fillOpacity": '0.95',"weight": 0.5},
-	]*/
-	// 6-CLASS ORANGE
-	/*var styles = [{"color": "#000000", "fillColor": "#ffffb2","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#fed976","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#feb24c","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#fd8d3c","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#f03b20","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#bd0026","fillOpacity": '0.95',"weight": 0.5},
-	]*/
-
- // 4-CLASS ORANGE
-	/*var styles = [{"color": "#000000", "fillColor": "#ffffb2","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#fecc5c","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#fd8d3c","fillOpacity": '0.95',"weight": 0.5},
-	{"color": "#000000", "fillColor": "#e31a1c","fillOpacity": '0.95',"weight": 0.5},
-	]*/
-
-	// 6-CLASS GnBu
-	/*var styles = [{"color": "#000000", "fillColor": "#f0f9e8","fillOpacity": '0.95',"weight": 1},
-	{"color": "#000000", "fillColor": "#ccebc5","fillOpacity": '0.95',"weight": 1},
-	{"color": "#000000", "fillColor": "#a8ddb5","fillOpacity": '0.95',"weight": 1},
-	{"color": "#000000", "fillColor": "#7bccc4","fillOpacity": '0.95',"weight": 1},
-	{"color": "#000000", "fillColor": "#43a2ca","fillOpacity": '0.95',"weight": 1},
-	{"color": "#000000", "fillColor": "#0868ac","fillOpacity": '0.95',"weight": 1},
-	]*/
-	
-	// 6-CLSSS YlRd
 
 	var styles = [{"color": "#000000", "fillColor": "#ffffb2","fillOpacity": '0.95',"weight": 1},
 	{"color": "#000000", "fillColor": "#fed976","fillOpacity": '0.95',"weight": 1},
@@ -1348,20 +1191,6 @@ function priceSymbols(data, map) {
 	{"color": "#000000", "fillColor": "#bd0026","fillOpacity": '0.95',"weight": 1},
 	]
 	var colors = ["#ffffb2", "#fed976","#feb24c","#fd8d3c","#f03b20","#bd0026"]
-	/*
-	var styles = [{"color": "#000000", "fillColor": "#ffffcc","fillOpacity": '0.95',"weight": 1},
-	{"color": "#000000", "fillColor": "#c7e9b4","fillOpacity": '0.95',"weight": 1},
-	{"color": "#000000", "fillColor": "#7fcdbb","fillOpacity": '0.95',"weight": 1},
-	{"color": "#000000", "fillColor": "#41b6c4","fillOpacity": '0.95',"weight": 1},
-	{"color": "#000000", "fillColor": "#2c7fb8","fillOpacity": '0.95',"weight": 1},
-	{"color": "#000000", "fillColor": "#253494","fillOpacity": '0.95',"weight": 1},
-	]*/
-
-	/*var gg2 = L.geoJson(data, {
-		onEachFeature(feature, layer) {
-			createInfoPopup(feature, layer, stylePass, radioValue)
-		}
-	})*/
 
 	legend1.onAdd = function (map) {
 			
@@ -1437,7 +1266,6 @@ function priceSymbols(data, map) {
 
 	$('.back_to_menu').on({
 		click: function() {
-			//console.log("BACK?",map.hasLayer(gg2))
 			if (map.hasLayer(gg2)) {
 				map.removeLayer(gg2)
 			}
@@ -1466,12 +1294,7 @@ function createInfoPopup(feature,layer,style,radioValue) {
 	layer.bindPopup(popupCntnt,{
 		offset:new L.Point(0,-10)
 	})
-	
-	/*var zoomLv = map.getZoom()
-	console.log("ZOOM", zoomLv)
-	if (zoomLv > 18) {
-		layer.bindTooltip(simp, {'permanent':true})
-	}*/
+
 	$('#unitTT').change(function() {
 		var content = ''
 		if (this.checked) {
@@ -1481,54 +1304,19 @@ function createInfoPopup(feature,layer,style,radioValue) {
 		}
 	})
 	
-	/*$("input[name='showTT']").click(function(){
-		var radioV = $("input[name='showTT']:checked").val();
-		console.log('checked', radioV)
-		if (radioV == 'price_per_person') {
-			console.log('BINDING PPP',simp)
-			layer.bindTooltip(simp, {'permanent':true,'direction':'center','opacity':'0.9'})
-			console.log('binded')
-		}else		if (radioV == 'number_of_units') {
-			console.log('BINDING NOU',layer)
-			layer.bindTooltip(simp, {'permanent':true,'direction':'center','opacity':'0.8'})		
-		}
-	})*/
-
-	
 	$(layer).on({
 		mouseover: function() {
 			layer.openPopup()
 			layer.setStyle({color:"#7777ff",weight:2})
-			/*if (typeH == 'House') {
-				layer.setStyle({fillColor:"#cccc00"})
-			} else {
-				layer.setStyle({fillColor:"#ff55ff"})
-			}*/
 		},
 		mouseout: function() {
-			//console.log('mouseout', addr)
 			layer.closePopup()
 			layer.setStyle(style)
-			/*if (typeH == 'House') {
-				layer.setStyle(style)
-			} else {
-				layer.setStyle(style)
-			}*/
 		},
 		click: function() {
 			layer.openPopup()
 			layer.setStyle({color: "#7777ff"})
-			//console.log('passing: ', addr)
-			updateInfoWindow(feature)//addr,name,typeH,url1,url2,det,yrB,flp)
-			/*if (typeH == 'House') {
-				layer.setStyle({fillColor:"#000000",opacity:'1'})
-			} else {
-				layer.setStyle({fillColor:"#552255",opacity:'1'})
-			}*/
-			/*layer.on({mouseout: function() {
-				layer.setStyle({fillColor:"#000000",opacity:'1'})
-				layer.closePopup()
-			}*/
+			updateInfoWindow(feature)
 		}
 	})
 }
@@ -1629,25 +1417,14 @@ function updateInfoWindow(feature) {
 				+ extraPriceStr + '</td><td>' + extraAreaStr + '</td><td>' + extraPPAStr + '</td></tr>'
 			}				
 		}
-		//console.log('Det_ON_THIS',i,'ARE:',flpN,title,price,area,ppa)
 	}
 
-	//for i '<p id="updatable-basic"><b>Floorplans: </b>' + flp['Floorplan1']['Title'] + '</p></div>'
-
-	//panelCntnt += 
 	tableC += '</table>'
-	//console.log('PANEL', panelCntnt)
 	$('#price_window').append(panelCntnt)
 	$('#price_window').append(tableC)
 	$('#res_window').append(panelCntnt)
 	$('#campus_window').append(panelCntnt)
 }
-
-/*function updateColor(feature, layer) {
-	if (feature.properties.Type_of_housing == 'House') {
-		
-	}
-}*/
 
 function createBaseSymbols(data, map) {
 	var basic = L.geoJson(data, {
@@ -1695,198 +1472,13 @@ function updateNotif(index) {
     }
 }
 
-/*function createSeqCtrl_new(map,attributes) {
-	console.log("entering")
-	var seqCtrl = L.Control.extend({
-		options: {
-			position: "bottomleft"
-		},
-		onAdd: function(map) {
-			var container = L.DomUtil.create('div', 'sequence-control-container')
-			$(container).append('<input type="range" class="range-slider-new" min="0" max="8" value="0" step="1">')
-			$(container).append('<button class="skip-new" id="reverse" title="Reverse">Reverse</button>')
-			$(container).append('<button class="skip-new" id="forward" title="Forward">Forward</button>')
-			$('#reverse').html('<img src="data/icon/new_backward.png">')
-			$('#forward').html('<img src="data/icon/new_forward.png">')
-			L.DomEvent.disableClickPropagation(container)
-			return container
-		}
-	})
-	map.addControl(new seqCtrl())
-
-	var index = $('.range-slider-new').val()
-	console.log('INDEX', index)
-
-	$('.skip-new').click(function() {
-		var index = $('.range-slider-new').val()		// retrive index upon click
-		if ($(this).attr('id') == 'forward') {
-			console.log("CLICKING1")
-			index ++
-			index = index > 8 ? 0 : index
-		} else if ($(this).attr('id') == 'reverse') {
-			index --
-			index = index < 0 ? 8 : index
-		}
-		// update range-slider per index retrived 
-		$('.range-slider-new').val(index)
-		var attr = attributes[index]
-		var yr = attr.split('_')[1]
-
-		updateNotif(index)
-		updateNotif_2(map,yr,attr)
-		updatePropSymbols(map, attr)
-	})
-
-	$('.range-slider-new').on('input', function(){
-    	// similar idea to the previous click event handler
-        var index = $(this).val()
-        var attr = attributes[index]
-		var yr = attr.split('_')[1]
-
-        updateNotif(index)
-        updateNotif_2(map,yr,attr)
-        updatePropSymbols(map, attr)       	
-    })
-}
-
-function updateNotif_2(map,yr,attr) {
-	if (checkNotif != undefined) {
-		$('.update_notif_C').remove()
-	}
-function 
-	var update_notif_2 = L.Control.extend({
-		options: {
-			position: 'bottomright'
-		},
-		onAdd: function(map) {
-			checkNotif = 0
-			var container = L.DomUtil.create('div','update_notif_C')
-			$(container).append('<div id="notif_2">Displaying GDP of year ' + yr + '</div')
-			            //add temporal legend div to container
-
-            //Step 1: start attribute legend svg string
-            var svg = '<svg id="attribute-legend" height="101px" width="195px">';
-
-        	//array of circle names to base loop on
-        	var circles = {
-            	max: 20,
-            	mean: 40,
-            	min: 60
-       	 	};
-
-        	//loop to add each circle and text to svg string
-        	for (var circle in circles){
-            	//circle string
-            	svg += '<circle class="legend-circle" id="' + circle + '" fill="#F47821" fill-opacity="0.8" stroke="#000000" cx="47"/>';
-
-            	//text string
-            	svg += '<text id="' + circle + '-text" x="95" y="' + circles[circle]*1.2 + '"></text>';
-        	};
-
-        	//close svg string
-       	 	svg += "</svg>";
-            
-            $(container).append(svg);
-
-			return container
-		}
-	})
-	map.addControl(new update_notif_2)
-	console.log("creating")
-
-	updateLegend(map, attr)
-
-}
-
-function updateLegend(map, attribute){
-	console.log("INTOO")
-    //create content for legend
-    var year = attribute.split("_")[1];
-    var content = "Population in " + year;
-
-    //replace legend content
-    $('#temporal-legend').html(content);
-
-    //get the max, mean, and min values as an object
-    var circleValues = getCircleValues(map, attribute);
-
-    for (var key in circleValues){
-        //get the radius
-    	var radius = calcR(circleValues[key]);
-        
-        $('#'+key).attr({
-            cy: 59 - radius,
-            r: radius
-        });
-
-        //Step 4: add legend text
-        $('#'+key+'-text').text(Math.round(circleValues[key]*100)/100 + " USD");
-
-        //Step 3: assign the cy and r attributes
-        $('#'+ key).attr({
-            cy: 98 - radius,
-            r: radius
-        });
-
-        $('#attribute-legend').append($('#' + key))
-
-    };
-};*/
-
-//Calculate the max, mean, and min values for a given attribute
-function getCircleValues(map, attribute){
-    //start with min at highest possible and max at lowest possible number
-    var min = Infinity,
-        max = -Infinity;
-
-    map.eachLayer(function(layer){
-        //get the attribute value
-        if (layer.feature){
-            var attributeValue = Number(layer.feature.properties[attribute]);
-
-            //test for min
-            if (attributeValue < min){
-                min = attributeValue;
-            };
-
-            //test for max
-            if (attributeValue > max){
-                max = attributeValue;
-            };
-        };
-    });
-
-    //set mean
-    var mean = (max + min) / 2;
-
-    //return values as an object
-    return {
-        max: max,
-        mean: mean,
-        min: min
-    };
-};
-
-//function 
-
 function enableMenuButtons(response, map) {
 	// append a series of buttons to '#panel', '#compare' and '#compareResult' interfaces
 	$('.back_to_menu').off('click')
 	
 	$('#menu').append("<p id='title_menu'>UW-Madison Off-Campus Housing Options Exploration Tool</p>")
-	/*$('#menu').append("<p id='title_explore'>Explore<br>_________________________</p>")
-	$('#menu').append("<br><button id='detail_explore'>Explore Details</button>")*/
-	
-	/*$('#detail_explore').off('click')
-	$('#detail_explore').on({
-		'click': function() {
-			console.log("DET_EXPLORE clicked!")
-			set_det_window()
-			createRepSymbols(response, map)
-		}
-	})*/
-
-	$('#menu').append("<p id='title_compare'>Compare<br>_________________________</p>")	
+	$('#menu').append("<p id='intro_menu'>&nbsp&nbsp&nbsp&nbsp&nbspThis web map aims at making off-campus searching experience around UW-Madison campus easier and more complete. Currently this site has 796 apartment records collected from apartment rental websites. This web map enables you to compare prices of different floor plans, and discover each apartment's proximity to campus, surrouding restaurants and bus stops. Click a green button below to start your exploration!</p>")
+	$('#menu').append("<p id='title_compare'>Compare<br>_________________________</p>")
 	
 	// Call price-compare function
 	$('#menu').append("<br><button id='price_compare'>Compare Price </button>")
@@ -1928,13 +1520,6 @@ function enableMenuButtons(response, map) {
 			getData3(response, map)
 		}
 	})
-	/*
-	$('#compare').append("&nbsp&nbsp<button class='compareButton' id='end_comparison'> <img class='arrow' src='data/icon/left_arrow2.png'>&nbsp&nbsp&nbspEnd comparison</button>")
-	$('#compare').append("&nbsp&nbsp&nbsp&nbsp&nbsp<button class='compareButton' id='to_comparison'> To compare&nbsp&nbsp&nbsp<img class='arrow' src='data/icon/right_arrow2.png'></button>")
-	$('#compare').append("<p>&nbsp&nbspSELECT TWO YEARS TO COMPARE: </p>")
-	$('#compare').append("&nbsp&nbsp<button id='select_again'>Select again</button><br><br><br>")
-	$('#compareResult').append("&nbsp&nbsp<button class='compareButton' id='exit_result'> <img class='arrow' src='data/icon/left_arrow2.png'>&nbsp&nbsp&nbspBack to selection</button>")
-	*/
 	// Only shows '#panel' at the inital stage, '#compare' and '#compareResult' interfaces are fired later upon clicking
 	// certain buttons.
 	$('#compare').hide()
@@ -1998,11 +1583,7 @@ function busSymbols(data, dataR, dataS, map) {
 						console.log('Line Properties:', feature.properties.Routes)
 					pass_routes = feature.properties.Routes
 					updateRoutes(pass_routes, dataR, map)
-					//createStopTooltip(map, layer, pass_routes)
 				}
-				/*mouseout: function() {
-					resetRoutes(dataR, map)
-				}*/
 			})
 		}
 	}).addTo(map)
@@ -2025,15 +1606,8 @@ function busSymbols(data, dataR, dataS, map) {
 			$('#bus_window').hide()
 		}
 	})
-}/*
-function createStopTooltip(map, layer, pass_routes) {
-	console.log('LAYERRRRRRR',layer)
-	layer.unbindTooltip()
-	var tooltipContent = '<div>' + pass_routes + '</div>'
-	layer.bindTooltip(tooltipContent, {
-		'direction':'top', 'offset':new L.Point(0, -25)
-	}).openTooltip()
-}*/
+}
+
 function resetRoutes(dataR, map) {
 	if (map.hasLayer(gg_routes)) {
 		map.removeLayer(gg_routes)
@@ -2056,16 +1630,6 @@ function updateRoutes(pass_routes, dataR, map) {
 	}
 	gg_routes = L.geoJson(dataR, {
 		onEachFeature: function(feature,layer) {
-			/*for (i = 0; i < pass_routes.length; i ++) {
-				console.log('UPDATING?',pass_routes[i],feature.properties.route_shor)
-
-				if (pass_routes[i] == feature.properties.route_shor) {
-					layer.setStyle({'color':'#6666dd', 'weight':10})
-				} /*else {
-					layer.setStyle({'color': '#777777', 'weight':2})
-				}
-		}*/	console.log('11111122222UPDATING????', pass_routes,feature.properties.route_shor)
-
 			if (pass_routes.includes(feature.properties.route_shor)) {
 				console.log('UPDATING????', pass_routes,feature.properties.route_shor)
 				layer.setStyle({'color':'#6666dd', 'weight':10, 'opacity': 0.4})
@@ -2074,356 +1638,6 @@ function updateRoutes(pass_routes, dataR, map) {
 			}
 		}
 	}).addTo(map)
-}
-//function createYrButtons(map) {
-	// Create buttons representing years with images as background, for years 1980, 1985, 1990, 1995, 2000, 2005
-	/*for (i = 0; i < 6; i ++) {
-		// retrive the currect images as background of buttons
-		yr = (1980 + i * 5).toString()
-		var buttonNameId = 'chooseYr' + yr
-		var buttonNameId_selector = '#' + buttonNameId
-		if (i == 0) {
-			var background_path = '<div class="image_button"><img class="jpg" src="data/yr_background/' + yr + '_v2.jpg"><div class="yr_text">' + yr + '</div></div>'
-		} else {
-			var background_path = '<div class="image_button"><img class="jpg" src="data/yr_background/' + yr + '_v2.jpg"><div class="yr_text">' + yr + '</div></div>'
-		}
-
-		// append clickable images to the "#compare" interface
-		$('#compare').append(background_path)
-	}
-	// Same idea as the previous for loop, adding images for years 1008, 1009, 2010
-	for (i = 0; i < 3; i ++) {
-		var yr = (2008 + i).toString()
-		var buttonNameId = 'chooseYr' + yr
-		var buttonNameId_selector = '#' + buttonNameId
-
-		if (i % 2 == 0) {
-			var background_path = '<div class="image_button"><img class="jpg" src="data/yr_background/' + yr + '_v2.jpg"><div class="yr_text">' + yr + '</div></div>'		
-		} else if (i != 2) {
-			var background_path = '<div class="image_button"><img class="jpg" src="data/yr_background/' + yr + '_v2.jpg"><div class="yr_text">' + yr + '</div></div>'
-		} else {
-			var background_path = '<div class="image_button"><img class="jpg" src="data/yr_background/' + yr + '_v2.jpg"><div class="yr_text">' + yr + '</div></div>'
-		}
-
-			$('#compare').append(background_path)*/
-		
-	
-/////
-
-/*function compareInterface(map,attributes) {
-	// add functionalities to the "#compare" interface, making it interact-able
-	var numSelected = 0
-	var yrSelectedArr = new Array
-
-	// End comparison button, click to go back to "#panel". Also re-fires updatePropSymbol and panelInterface functions
-	$('#end_comparison').click(function() {
-		$('#compare').hide()
-		$('#panel').show()
-
-		// re-fires updatePropSymbols and panelInterface functions after clicked "end comparison"
-		updatePropSymbols(map, attributes[index])
-		panelInterface(map,attributes)
-	})
-	// As a feedback, the clickable image opacity is changed upon mouseover
-	$('.image_button').mouseover(function() {
-		consoleconsole.log('mouseovered image')
-		$(this).css({'opacity':'0.25'})
-	})
-
-	// The clickable image opacity changes back after mouseout
-	$('.image_button').mouseout(function() {
-		console.log('mouseouted image')
-		$(this).css({'opacity':'0.6'})
-	})
-
-	// The clickable image reformats after the user clicks it, giving a feedback that it is selected
-	$('.image_button').click(function() {
-		// Retrive years selected by user
-		yrSelectedArr.push(parseInt($(this).find('.yr_text').html()))
-		console.log("YR SELECTED: ", yrSelectedArr)
-		console.log('clicked image')
-		$(this).find('.jpg').css({'border': '2.5px solid red'})
-		$(this).css({'opacity':'1'})
-		$(this).mouseout(function() {
-			$(this).css('opacity','1')
-		})
-		// Count the number of clicks, judge whether to reset image_buttons or proceed to comparison
-		numSelected += 1
-		if (numSelected < 2) {
-			// User cannot click to_comparison if they have not selected two year buttons
-			$('#to_comparison').css({'background-color': '#a3a3a3'})
-			$('#to_comparison').off('click')
-		} else if (numSelected == 2) {
-			// After user has selected two image-buttons, to_comparison button will light up and fire up click event
-			$('#to_comparison').css({'background-color': '#4CAF50'})
-			$('#to_comparison').click(function() {
-				$('#compare').hide()
-				$('#compareResult').show()
-				// Get attributes of thw two selected years
-				var data2Yrs = new Array
-				var index1 = yrSelectedArr[0] > 2005 ? (yrSelectedArr[0] - 2002) : ((yrSelectedArr[0] - 1980) / 5)
-				var index2 = yrSelectedArr[1] > 2005 ? (yrSelectedArr[1] - 2002) : ((yrSelectedArr[1] - 1980) / 5)
-				if (index1 < index2) {
-					data2Yrs.push(attributes[index1])
-					data2Yrs.push(attributes[index2])
-				} else {
-					data2Yrs.push(attributes[index2])
-					data2Yrs.push(attributes[index1])
-				}
-
-				// fires compareResult function with formatted parameters
-				compareResult(map, attributes, numSelected, yrSelectedArr, data2Yrs)
-			})
-		} else if (numSelected > 2) {
-			// If number of selection exceeds 2, gray-out "To compare" button and disable click-ability
-			// re-fire image-buttons and this same function
-			startOver(map, attributes)
-		}
-		// If user clicked select again, then re-fire image-buttons and this same function [OK]
-		// WARNING: This part still contains bug, DO NOT use this button. Rather, triple click on the image to reset selection.
-		$('#select_again').click(function(map) {
-			startOver(map, attributes)
-		})
-	})
-}
-function startOver(map,attributes) {
-	// Reset the "#compare" interface for new selection
-	$(".image_button").remove()
-	$('#to_comparison').css({'background-color': '#a3a3a3'})
-	$('#to_comparison').off('click')
-	$('.image_button').find('.jpg').css('all','initial')
-	createYrButtons(map)
-	compareInterface(map,attributes)
-}	*/
-/////
-
-function panelInterface(map,attributes) {
-	// panel interface (home page)
-	$('#start_comparison').click(function() {
-		$('#menu').hide()
-		$('#compare').show()
-		$('#compareResult').hide()
-		compareInterface(map,attributes)
-	})
-}
-//////
-
-function compareResult(map,attributes,numSelected,yrSelectedArr,data2Yrs) {
-	// Check if the gdp data passed contains n/a data (actually only Hainan GDP of year 1980 is n/a)
-	var hasNA = false
-
-	// clear previous data displayed
-	$('#compareInfo').remove()
-	$('#compareRanking').remove()
-	// "percentage-justified"
-	$('#perc_j').remove()
-	// "administrative division-justified"
-	$('#admin_j').remove(0)
-	if (yrSelectedArr[0] > yrSelectedArr[1]) {
-		var interm = yrSelectedArr[0]
-		yrSelectedArr[0] = yrSelectedArr[1]
-		yrSelectedArr[1] = interm
-	}
-
-	// Intro part of compare info panel
-	var compareInfo = '<div id="compareInfo"><br>GDP(ppp) change rates per year, per administrative division between ' 
-	+ yrSelectedArr[0] + ' and ' + yrSelectedArr[1] + ' are: <br><br>' + '</div>'
-	// append the intro to '#compareResult' panel
-	$('#compareResult').append(compareInfo)
-	
-	// The passedBack contains a list of gdp increase percentage of all administrative districts 
-	// and a list of administrative district names
-	var passedBack = createCompareSymbols(map,attributes, numSelected, yrSelectedArr, data2Yrs)
-	var perc_incr_L = passedBack[0]
-	var admin_L = passedBack[1]
-
-	var perc_sorted = []
-	var admin_sorted = []
-
-	//	rank the two lists from largest to smalles
-	while (perc_incr_L.length > 0) {
-		console.log("LEN",perc_incr_L)
-		var max = 0
-		var max_admin = ''
-		var ind_max = 0
-
-		for (i = 0; i < perc_incr_L.length; i ++) {
-
-			if (perc_incr_L[i] > max) {
-				max = perc_incr_L[i]
-				max_admin = admin_L[i]
-				var ind_max = i
-				console.log('maxxxxxxx',max)
-			}
-		}
-		perc_incr_L.splice(ind_max, 1)
-		admin_L.splice(ind_max, 1)
-
-		console.log("MIDDLLLLL", i, perc_incr_L, max)
-		perc_sorted.push(max)
-		admin_sorted.push(max_admin)
-	}
-
-	// Deal with exception: those whose data is n/a
-	if (admin_sorted[30].length == 0) {
-		admin_sorted[30] = 'Hainan'
-		hasNA = true
-	}
-	
-	// declare <div> for displaying the data
-	var ranking = '<div id="compareRanking"><br><b>Rank&nbsp | &nbspAdministrative division&nbsp | &nbspChange rate per year</b><br>'
-	var perc_j = '<div id="perc_j">'
-	var admin_j = '<div id="admin_j">'
-	console.log('1--------')
-
-	// displaying data
-	for (i = 0; i < perc_sorted.length; i ++) {
-
-		if (i < 9) {
-			var spacing = '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
-		} else {
-			var spacing = '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
-		}
-		
-		// when all data of selected year is available
-		if (!hasNA) {
-			if (i % 2 == 1) {
-					var admin_j = '<div class="admin_j" style="color:#aaaaaa">' + (i + 1) + spacing + admin_sorted[i] + '</div>'
-					var perc_j = '<div class="perc_j" style="color:#aaaaaa">+' + perc_sorted[i] + '%</div>'
-				} else {
-					var admin_j = '<div class="admin_j">' + (i + 1) + spacing + admin_sorted[i] + '</div>'
-					var perc_j = '<div class="perc_j">+' + perc_sorted[i] + '%</div>'
-				}
-			
-			// when the data list has one n/a item
-			} else {
-				if (i < 30) {
-					if (i % 2 == 1) {
-						var admin_j = '<div class="admin_j" style="color:#aaaaaa">' + (i + 1) + spacing + admin_sorted[i] + '</div>'
-					var perc_j = '<div class="perc_j" style="color:#aaaaaa">+' + perc_sorted[i] + '%</div>'
-					} else {
-						var admin_j = '<div class="admin_j">' + (i + 1) + spacing + admin_sorted[i] + '</div>'
-						var perc_j = '<div class="perc_j">+' + perc_sorted[i] + '%</div>'
-					}
-				} if ((i == 30) && hasNA) {
-					if (i % 2 == 1) {
-						var admin_j = '<div class="admin_j" style="color:#aaaaaa">' + (i + 1) + spacing + admin_sorted[i] + '</div>'
-						var perc_j = '<div class="perc_j" style="color:#aaaaaa"> No data for year 1980 </div>'
-					} else {
-						var admin_j = '<div class="admin_j">' + (i + 1) + spacing + admin_sorted[i] + '</div>'
-						var perc_j = '<div class="perc_j_NA">No data for year 1980 </div>'
-					}
-				}
-			}
-
-		ranking += perc_j + admin_j
-	}
-
-	console.log('RANKING',ranking)
-	$('#compareResult').append(ranking)
-}
-
-function createCompareSymbols(map, attributes, numSelected, yrSelectedArr, data2Yrs) {
-	console.log('DATA2YR',data2Yrs)
-	var markerG = new Array
-	var perc_incr_L = new Array
-	var admin_L = []
-	var passBack = new Array
-	for (i = 0; i < 2; i ++) {
-		map.eachLayer(function(layer) {
-			if (layer.feature && layer.feature.properties[data2Yrs[i]]) {
-
-				var proprts = layer.feature.properties
-				console.log('PROPERTIES',proprts)
-
-				var radius = calcR(proprts[data2Yrs[i]])
-
-				var popupRadius = calcR(proprts[data2Yrs[1]])
-
-				var coord = [layer.feature.geometry.coordinates[1], layer.feature.geometry.coordinates[0]]
-				console.log(typeof(coord), coord)
-
-				var yr1 = yrSelectedArr[0]
-				var yr2 = yrSelectedArr[1]
-
-				var gdpYr1 = proprts[data2Yrs[0]]
-				var gdpYr2 = proprts[data2Yrs[1]]
-
-				var perc_incr = ((Math.pow(gdpYr2  / gdpYr1, 1/(yr2 - yr1)) - 1) * 100).toFixed(2)
-
-				// Hover to view details of comparison
-				var popupCntnt = "<ul id='compare_popup'><li class='c_p_basic'><b>GDP(ppp) per capita in year " + yr1 +  " :</b> $" + gdpYr1 + "</li>" +
-				"<li class='c_p_basic'><b>GDP(ppp) per capita in year " + yr2 + " :</b> $" + gdpYr2 + "</li>" + 
-				"<li class='c_p_detail'> In this <b>" + (yr2 - yr1) + "-year</b> period from <b>" + yr1 + " </b>to<b> " + yr2 + "</b>," + 
-				"<br>In the administrative division of <b>" + proprts.Admin_division + ",</b>" + 
-				"<br>The average GDP(ppp) per capita increase per year is <b>" + ((gdpYr2 - gdpYr1) / (yr2 - yr1)).toFixed(1) + "</b> USD," + 
-				"<br>Or an increase rate of <b>" + perc_incr + "</b> percent per year." + 
-				"<br>In this peroid, the GDP(ppp) of this administrative division has increased for <b>" + (gdpYr2 / gdpYr1).toFixed(2) + "</b> times.</li></ul>"
-
-				// The data of the earlier year will be displayed using another circle marker group
-				if (i == 0) {
-
-					perc_incr_L.push(Number(perc_incr))
-					admin_L.push(String(proprts.Admin_division))
-					passBack.push(perc_incr_L,admin_L)
-
-					circle2 = L.circleMarker(coord, {
-						radius: radius,
- 						stroke: true, 
-  						color: 'red', 
-  						opacity: 1, 
-  						weight: 0.3, 
-  						fill: true, 
-  						fillColor: '#6677ee', 
-  						fillOpacity: 0.5
-  					}).addTo(map);
-					circle2.bindPopup(popupCntnt, {
-						offset: new L.Point(0, -popupRadius * 0.8),
-						opacity:0.8
-					})
-					markerG.push(circle2)
-					$(circle2).on({
-						mouseover: function() {
-							this.openPopup()
-						},
-						mouseout: function() {
-							this.closePopup()
-						},
-						click: function() {
-							this.openPopup()
-							/*this.on({
-								mouseout: function(){	
-									this.openPopup()
-								}
-							})*/
-						}
-					})
-				}
-
-				layer.setRadius(radius)
-
-				// bind popups
-				layer.bindPopup(popupCntnt, {
-					offset: new L.Point(0, -radius * 0.8),
-					opacity: 0.8
-				})
-			}
-		})
-	}
-
-	// Reset the additional circle marker group when user clicks exit result, and prepare for a new comparison
-	$('#exit_result').click(function() {
-		for (i = 0; i < markerG.length; i ++) {
-			map.removeLayer(markerG[i])
-		}
-		map.eachLayer(function(layer) {
-			layer.unbindPopup()
-		})
-		$('#compareResult').hide()
-		$('#compare').show()
-		startOver(map,attributes)
-	})
-	return passBack
 }
 
 function createRess(data, map) {
@@ -2441,7 +1655,6 @@ function createRess(data, map) {
 		}
 	}).addTo(map)
 }
-
 
 function getData3(data, map) {
 	console.log('getting-data',data)
@@ -2490,8 +1703,6 @@ function ajax5() {
 	})
 }
 
-
-
 function ajax10() {
 	return $.ajax("data/10_min_walk_polygon+reachable_restaurant_id.geojson", {
 		/* specify the file format the ajax method is to call*/
@@ -2525,26 +1736,8 @@ function getData(map) {
 			//var attributes = processData(response)
 			enableMenuButtons(response, map)
 			createBaseSymbols(response, map)
-
-			//createRepSymbols(response, map)
-			//createSeqCtrl_new(map,attributes)
-			
-			// The fifth operator: re-expression
-			
-			//createYrButtons(map)
-			/*panelInterface(map,attributes)
-			/* The fifth operator: compare*/
 		}
 	})
-	/*$.ajax("data/all_stops_of_campus_routes_BOUNDING_BOX.geojson", {
-		/* specify the file format the ajax method is to call
-		dataType: "json",
-		success: function(response) {
-			//var attributes = processData(response)
-			createStops(response, map)
-			//createSeqCtrl_new(map,attributes)
-		}
-	})*/
 }
 function getUW(data, map) {
 	console.log('UWUWgetting')

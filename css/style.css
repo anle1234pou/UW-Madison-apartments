@@ -195,6 +195,18 @@ body {
 	font-size: 24px;
 	font-family: Arial, Helvetica, sans-serif
 }
+#intro_menu {
+	line-height:24px;
+	position: absolute;
+	margin-top: 17%;
+	margin-left: 2px;
+	padding: 9px;
+	text-align: left;
+	font-size: 16px;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #d6eede
+
+}
 .back_to_menu {
 	text-align: center;
 	font-size:16px;
@@ -225,14 +237,14 @@ body {
 #title_compare {
 	line-height: 5px;
 	position: absolute;
-	margin-top: 50%;
+	margin-top: 75%;
 	margin-left: 10px;
 	text-align: left;
 	font-size: 16px;
 }
 #price_compare {
 	position: absolute;
-	margin-top: 57.5%;
+	margin-top: 82.5%;
 	margin-left: 10px;
 	text-align: center;
 	font-size: 16px;
@@ -247,7 +259,7 @@ body {
 
 #area_compare {
 	position: absolute;
-	margin-top: 57.5%;
+	margin-top: 82.5%;
 	margin-left: 200px;
 	text-align: center;
 	font-size: 16px;
@@ -257,7 +269,7 @@ body {
 }
 #ppa_compare {
 	position: absolute;
-	margin-top: 75%;
+	margin-top: 100%;
 	margin-left: 10px;
 	text-align: center;
 	font-size: 16px;
@@ -270,14 +282,14 @@ body {
 #title_proximity {
 	line-height: 5px;
 	position: absolute;
-	margin-top: 97.5%;
+	margin-top: 122.5%;
 	margin-left: 10px;
 	text-align: left;
 	font-size: 16px;
 }
 #campus_proximity {
 	position: absolute;
-	margin-top: 105%;
+	margin-top: 130%;
 	margin-left: 10px;
 	text-align: center;
 	font-size: 16px;
@@ -287,7 +299,7 @@ body {
 }
 #res_proximity {
 	position: absolute;
-	margin-top: 105%;
+	margin-top: 130%;
 	margin-left: 200px;
 	text-align: center;
 	font-size: 16px;
@@ -297,7 +309,7 @@ body {
 }
 #bus_proximity {
 	position: absolute;
-	margin-top: 122.5%;
+	margin-top: 147.5%;
 	margin-left:10px;
 	text-align: center;
 	font-size: 16px;
