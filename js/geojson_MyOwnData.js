@@ -201,7 +201,7 @@ function all_ress_5(map, data_res, ress5) {
 					$('#ress_info').remove()
 					var windowContent = "<div id='ress_info' style='padding-top:-10px; line-height:20px'>________________________________________<br><b>Name:</b> " + feature.properties.name + '<br><b>Address:</b> ' + feature.properties.address + '<br><b>Price range:</b> '
 					+ feature.properties.price_range + '<br><b>Rating count:</b> ' + feature.properties.rating_count + '<br><b>Rating score:</b> ' + feature.properties.rating_score 
-					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href="' + feature.properties.url + '">' + feature.properties.url + '</a></p></div>'
+					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href="' + feature.properties.url + '"' + ' target="_blank">' + feature.properties.url + '</a></p></div>'
 					$('#res_window').append(windowContent)
 				}
 			})
@@ -305,7 +305,7 @@ function all_ress_10(map, data_res, ress10) {
 					$('#ress_info').remove()
 					var windowContent = "<div id='ress_info' style='padding-top:-10px; line-height:20px'>________________________________________<br><b>Name:</b> " + feature.properties.name + '<br><b>Address:</b> ' + feature.properties.address + '<br><b>Price range:</b> '
 					+ feature.properties.price_range + '<br><b>Rating count:</b> ' + feature.properties.rating_count + '<br><b>Rating score:</b> ' + feature.properties.rating_score 
-					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href="' + feature.properties.url + '">' + feature.properties.url + '</a></div>'
+					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href="' + feature.properties.url + '"' + 'target="_blank">' + feature.properties.url + '</a></div>'
 					$('#res_window').append(windowContent)
 				}
 			})
@@ -1534,7 +1534,7 @@ function busSymbols(data, dataR, dataS, map) {
 			var window_item = 'Route ' + feature.properties.route_shor 
 			+ '</a>  <label><input type="radio" name="routes" value=' 
 			+ feature.properties.route_shor + '>Show on map</label>'
-			+ '&nbsp&nbsp&nbsp<b>URL:</b> <a href="'+ feature.properties.route_url + '">Webpage on metro transit<br><br>' 
+			+ '&nbsp&nbsp&nbsp<b>URL:</b> <a href="'+ feature.properties.route_url + '"' + ' target="_blank">Webpage on metro transit<br><br>' 
 			$('#bus_side_window').append(window_item)
 		}
 	}).addTo(map)
