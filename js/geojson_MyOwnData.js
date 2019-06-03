@@ -201,7 +201,7 @@ function all_ress_5(map, data_res, ress5) {
 					$('#ress_info').remove()
 					var windowContent = "<div id='ress_info' style='padding-top:-10px; line-height:20px'>________________________________________<br><b>Name:</b> " + feature.properties.name + '<br><b>Address:</b> ' + feature.properties.address + '<br><b>Price range:</b> '
 					+ feature.properties.price_range + '<br><b>Rating count:</b> ' + feature.properties.rating_count + '<br><b>Rating score:</b> ' + feature.properties.rating_score 
-					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href=' + feature.properties.url + >' + feature.properties.url + '</a></p></div>'
+					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href="' + feature.properties.url + '">' + feature.properties.url + '</a></p></div>'
 					$('#res_window').append(windowContent)
 				}
 			})
@@ -305,7 +305,7 @@ function all_ress_10(map, data_res, ress10) {
 					$('#ress_info').remove()
 					var windowContent = "<div id='ress_info' style='padding-top:-10px; line-height:20px'>________________________________________<br><b>Name:</b> " + feature.properties.name + '<br><b>Address:</b> ' + feature.properties.address + '<br><b>Price range:</b> '
 					+ feature.properties.price_range + '<br><b>Rating count:</b> ' + feature.properties.rating_count + '<br><b>Rating score:</b> ' + feature.properties.rating_score 
-					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href=' + feature.properties.url + '>' + feature.properties.url + '</a></div>'
+					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href="' + feature.properties.url + '">' + feature.properties.url + '</a></div>'
 					$('#res_window').append(windowContent)
 				}
 			})
@@ -1338,10 +1338,10 @@ function updateInfoWindow(feature) {
 	//+'<p id="updatable-basic"><b>Type of housing: </b>' + typeH + '</p>'
 	+'<p id="updatable-basic"><b>Type: </b>' + det + '</p>'
 	+'<p id="updatable-basic"><b>Year built: </b>' + yrB + '</p>'
-	+'<p id="updatable-basic"><b>URL1: </b><br><a href=' + url1 + '>' + url1 + '</a></p>'
+	+'<p id="updatable-basic"><b>URL1: </b><br><a href="' + url1 + '">' + url1 + '</a></p>'
 	
 	if (url2 != '-') {
-		panelCntnt += '<p id="updatable-basic"><b>URL2: </b><br><a href=' + url2 + '>' + url2 + '</a></p>'
+		panelCntnt += '<p id="updatable-basic"><b>URL2: </b><br><a href="' + url2 + '">' + url2 + '</a></p>'
 	}
 	else {
 		panelCntnt += '<p id="updatable-basic"><b>URL2: </b><br>' + url2 + '<br><br></p>'
