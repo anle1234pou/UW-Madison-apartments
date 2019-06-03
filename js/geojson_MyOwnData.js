@@ -1,7 +1,3 @@
-/* Map of GeoJSON data from MegaCities.geojson */
-// WARNING: 1. Do not use the 'select again' button. Data cannot be successfully retrieved after clicking this button, and 
-// I have not yet found out where the bug is. Please triple click the image to reset selection.
-
 // Declare global variables
 var yrSelectedArr = new Array
 var circle2
@@ -205,7 +201,7 @@ function all_ress_5(map, data_res, ress5) {
 					$('#ress_info').remove()
 					var windowContent = "<div id='ress_info' style='padding-top:-10px; line-height:20px'>________________________________________<br><b>Name:</b> " + feature.properties.name + '<br><b>Address:</b> ' + feature.properties.address + '<br><b>Price range:</b> '
 					+ feature.properties.price_range + '<br><b>Rating count:</b> ' + feature.properties.rating_count + '<br><b>Rating score:</b> ' + feature.properties.rating_score 
-					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href="url">' + feature.properties.url + '</a></p></div>'
+					+ '<br>Tags: ' + feature.properties.tags + '<br><b>URL: </b><a href=' + feature.properties.url + >' + feature.properties.url + '</a></p></div>'
 					$('#res_window').append(windowContent)
 				}
 			})
